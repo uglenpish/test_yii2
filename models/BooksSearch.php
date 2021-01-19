@@ -18,7 +18,7 @@ class BooksSearch extends Books
     {
         return [
             [['id', 'date_manuf', 'author'], 'integer'],
-            [['name'], 'safe'],
+            [['name', 'author'], 'safe'],
         ];
     }
 
@@ -41,6 +41,7 @@ class BooksSearch extends Books
     public function search($params)
     {
         $query = Books::find();
+        $query->joinWith(['author']);
 
         // add conditions that should always apply here
 
@@ -63,7 +64,8 @@ class BooksSearch extends Books
             'author' => $this->author,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'author.name', $this->author]);
 
         return $dataProvider;
     }

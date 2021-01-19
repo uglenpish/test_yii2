@@ -10,6 +10,7 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\EntryForm;
+use app\models\Authors; 
 
 class SiteController extends Controller
 {
@@ -60,9 +61,9 @@ class SiteController extends Controller
    *
    * @return string
    */
-  public function actionIndex()
-  {
-    return $this->render('index');
+  public function actionIndex(){
+    $authors = Authors::find()->with('books')->all();
+    return $this->render('index',compact('authors'));
   }
 
   /**
